@@ -1,0 +1,19 @@
+version: '1'
+services:
+  client:
+    tty: true
+    build:
+      context: ./
+      dockerfile: ./client/Dockerfile
+    environment:
+      PORT: 3000
+      PROXY_API: http://server:8080/
+    ports:
+      - 3000:3000
+  server:
+    tty: true
+    build:
+      context: ./
+      dockerfile: ./server/Dockerfile
+    ports:
+      - 8080:8080
