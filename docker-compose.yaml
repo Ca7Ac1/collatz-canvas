@@ -10,6 +10,8 @@ services:
       PROXY_API: http://server:8080/
     ports:
       - 3000:3000
+    volumes:
+      - ./client/src:/collatz/client/src:rw
   server:
     tty: true
     build:
@@ -17,3 +19,5 @@ services:
       dockerfile: ./server/Dockerfile
     ports:
       - 8080:8080
+    volumes:
+      - ./server/src:/collatz/server/src:rw

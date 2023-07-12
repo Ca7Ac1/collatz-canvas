@@ -3,13 +3,13 @@ FROM node:20-alpine3.17
 # The /app directory should act as the main application directory
 WORKDIR /collatz
 
-RUN mkdir -p ./client/src
+RUN mkdir -p ./client
+
 # Copy the app package and package-lock.json file
-COPY ./client/src ./client/src
+COPY ./client/ ./client/
 
 # RUN npm install
-
-# RUN npm run build
+RUN npm install --prefix /collatz/client
 
 EXPOSE $PORT
 
@@ -20,3 +20,5 @@ ENV NUXT_PORT=$PORT
 ENV PROXY_API=$PROXY_API
 
 ENV PROXY_LOGIN=$PROXY_LOGIN
+
+ENTRYPOINT [ "npm",  "run",  "dev", "--prefix", "/collatz/client" ] 
