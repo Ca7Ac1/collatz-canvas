@@ -1,8 +1,13 @@
 import React from 'react'
 
 type MenuProps = {
-  textCallback: Function
+  loadCallback: () => void
+  displayCallback: (inputValue: number) => void
 };
+
+const delay = (ms: number) => new Promise(
+  resolve => setTimeout(resolve, ms)
+);
 
 export function Menu(props: MenuProps) {
   return (
@@ -17,9 +22,18 @@ export function Menu(props: MenuProps) {
         <p>
           Enter your starting Collatz Number: &nbsp;
         </p>
-        <input type="text" id='collatzNumber' onKeyDown={(event) => {
+        <input type="number" pattern="[0-9]*" min="1" onKeyDown={async (event) => {
           if (event.key === "Enter") {
-            props.textCallback(document.getElementById("collatzNumber"));
+            const element = event.currentTarget as HTMLInputElement
+            const inputValue = +element.value;
+
+            if (element.value != "" && Number.isInteger(inputValue)) {
+              props.loadCallback();
+
+              await new Promise((r) => setTimeout(r, 3000));
+
+              props.displayCallback(inputValue);
+            }
           }
         }} />
       </div>

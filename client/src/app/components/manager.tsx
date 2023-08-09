@@ -8,25 +8,50 @@ type ManagerProps = {
 };
 
 type ManagerState = {
+    awaitingInput: boolean
     loading: boolean
+    canvasValue: number
 };
 
 export class Manager extends React.Component<ManagerProps, ManagerState> {
     constructor(props: ManagerProps) {
         super(props);
 
-        this.state = { loading: false };
+        this.state = {
+            awaitingInput: true,
+            loading: false,
+            canvasValue: 0
+        };
     }
 
-    flipLoad(num: number): void {
-        console.log(num);
-
+    setLoading(): void {
         this.setState({
-            loading: !this.state.loading
+            awaitingInput: false,
+            loading: true
+        });
+    }
+
+    displayCanvas(inputVal: number): void {
+        this.setState({
+            awaitingInput: false,
+            loading: false,
+            canvasValue: inputVal
         });
     }
 
     render() {
+        if (this.state.awaitingInput) {
+            return (
+                <main>
+                    <Menu loadCallback={() => {
+                        this.setLoading();
+                    }} displayCallback={(inputVal: number) => {
+                        this.displayCanvas(inputVal)
+                    }} />
+                </main>
+            )
+        }
+
         if (this.state.loading) {
             return (
                 <main>
@@ -37,9 +62,7 @@ export class Manager extends React.Component<ManagerProps, ManagerState> {
 
         return (
             <main>
-                <Menu textCallback={(num: number) => {
-                    this.flipLoad(num);
-                }} />
+
             </main>
         )
     }
