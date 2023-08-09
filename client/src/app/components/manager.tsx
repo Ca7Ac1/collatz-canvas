@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Menu } from './menu'
 import { Loader } from './load'
+import { Canvas } from './canvas'
 
 
 type ManagerProps = {
@@ -10,7 +11,7 @@ type ManagerProps = {
 type ManagerState = {
     awaitingInput: boolean
     loading: boolean
-    canvasValue: number
+    canvasValues: Array<number>
 };
 
 export class Manager extends React.Component<ManagerProps, ManagerState> {
@@ -20,22 +21,23 @@ export class Manager extends React.Component<ManagerProps, ManagerState> {
         this.state = {
             awaitingInput: true,
             loading: false,
-            canvasValue: 0
+            canvasValues: []
         };
     }
 
     setLoading(): void {
         this.setState({
             awaitingInput: false,
-            loading: true
+            loading: true,
+            canvasValues: []
         });
     }
 
-    displayCanvas(inputVal: number): void {
+    displayCanvas(collatzValues: Array<number>): void {
         this.setState({
             awaitingInput: false,
             loading: false,
-            canvasValue: inputVal
+            canvasValues: collatzValues
         });
     }
 
@@ -45,8 +47,8 @@ export class Manager extends React.Component<ManagerProps, ManagerState> {
                 <main>
                     <Menu loadCallback={() => {
                         this.setLoading();
-                    }} displayCallback={(inputVal: number) => {
-                        this.displayCanvas(inputVal)
+                    }} displayCallback={(collatzValues: Array<number>) => {
+                        this.displayCanvas(collatzValues)
                     }} />
                 </main>
             )
@@ -62,7 +64,7 @@ export class Manager extends React.Component<ManagerProps, ManagerState> {
 
         return (
             <main>
-
+                <Canvas collatzNumbers={this.state.canvasValues} />
             </main>
         )
     }

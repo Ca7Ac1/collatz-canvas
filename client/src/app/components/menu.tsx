@@ -2,12 +2,16 @@ import React from 'react'
 
 type MenuProps = {
   loadCallback: () => void
-  displayCallback: (inputValue: number) => void
+  displayCallback: (inputValue: Array<number>) => void
 };
 
 const delay = (ms: number) => new Promise(
   resolve => setTimeout(resolve, ms)
 );
+
+async function getData(inputValue: number): Promise<Array<number>> {
+  return [inputValue];
+}
 
 export function Menu(props: MenuProps) {
   return (
@@ -27,12 +31,12 @@ export function Menu(props: MenuProps) {
             const element = event.currentTarget as HTMLInputElement
             const inputValue = +element.value;
 
-            if (element.value != "" && Number.isInteger(inputValue)) {
+            if (element.value != "" && Number.isInteger(inputValue) && inputValue > 0) {
               props.loadCallback();
 
-              await new Promise((r) => setTimeout(r, 3000));
+              await new Promise((r) => setTimeout(r, 1000));
 
-              props.displayCallback(inputValue);
+              props.displayCallback(await getData(inputValue));
             }
           }
         }} />
