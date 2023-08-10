@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Menu } from './menu'
 import { Loader } from './load'
-import { Canvas } from './canvas'
+import { Canvas, CanvasData } from './canvas'
 
 
 type ManagerProps = {
@@ -11,7 +11,7 @@ type ManagerProps = {
 type ManagerState = {
     awaitingInput: boolean
     loading: boolean
-    canvasValues: Array<number>
+    collatzSequence: Array<CanvasData>
 };
 
 export class Manager extends React.Component<ManagerProps, ManagerState> {
@@ -21,7 +21,7 @@ export class Manager extends React.Component<ManagerProps, ManagerState> {
         this.state = {
             awaitingInput: true,
             loading: false,
-            canvasValues: []
+            collatzSequence: []
         };
     }
 
@@ -29,7 +29,7 @@ export class Manager extends React.Component<ManagerProps, ManagerState> {
         this.setState({
             awaitingInput: false,
             loading: true,
-            canvasValues: []
+            collatzSequence: []
         });
     }
 
@@ -37,7 +37,9 @@ export class Manager extends React.Component<ManagerProps, ManagerState> {
         this.setState({
             awaitingInput: false,
             loading: false,
-            canvasValues: collatzValues
+            collatzSequence: collatzValues.map((collatzValue) => {
+                return {sequenceNum: collatzValue}
+            })
         });
     }
 
@@ -64,7 +66,7 @@ export class Manager extends React.Component<ManagerProps, ManagerState> {
 
         return (
             <main>
-                <Canvas collatzNumbers={this.state.canvasValues} />
+                <Canvas collatzNumbers={this.state.collatzSequence} />
             </main>
         )
     }
