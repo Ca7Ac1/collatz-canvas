@@ -25,6 +25,14 @@ export class Manager extends React.Component<ManagerProps, ManagerState> {
         };
     }
 
+    reset(): void {
+        this.setState({
+            awaitingInput: true,
+            loading: false,
+            collatzSequence: []
+        });
+    }
+
     setLoading(): void {
         this.setState({
             awaitingInput: false,
@@ -37,8 +45,8 @@ export class Manager extends React.Component<ManagerProps, ManagerState> {
         this.setState({
             awaitingInput: false,
             loading: false,
-            collatzSequence: collatzValues.map((collatzValue) => {
-                return {sequenceNum: collatzValue}
+            collatzSequence: collatzValues.map((collatzValue, idx) => {
+                return {value: collatzValue, sequenceIdx: idx}
             })
         });
     }
@@ -66,6 +74,9 @@ export class Manager extends React.Component<ManagerProps, ManagerState> {
 
         return (
             <main>
+                <div style={{color: "teal"}}>
+                    <button onClick={() => { this.reset() }}> Back </button>
+                </div>
                 <Canvas collatzNumbers={this.state.collatzSequence} />
             </main>
         )
