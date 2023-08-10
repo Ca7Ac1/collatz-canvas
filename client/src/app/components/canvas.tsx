@@ -1,8 +1,9 @@
 import React from 'react'
-import { LineChart, Line, ResponsiveContainer } from "recharts";
+import { ResponsiveContainer, LineChart, Line, YAxis, Tooltip } from "recharts";
 
 export type CanvasData = {
-    sequenceNum: number
+    value: number
+    sequenceIdx: number
 }
 
 type CanvasProps = {
@@ -12,9 +13,11 @@ type CanvasProps = {
 export function Canvas(props: CanvasProps) {
     return (
         <div>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="95%" height={600}>
                 <LineChart data={props.collatzNumbers}>
-                    <Line type="monotone" dataKey="sequenceNum" stroke="#8884d8" strokeWidth={2} />
+                    <YAxis />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="value" stroke="#8884d8" animationDuration={10009} strokeWidth={2} />
                 </LineChart>
             </ResponsiveContainer>
         </div>
