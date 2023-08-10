@@ -14,6 +14,7 @@ const delay = (ms: number) => new Promise(
 );
 
 async function getData(inputValue: number): Promise<Array<number>> {
+  try {
   const response = await fetch('http://CollatzCanvas/server/${inputValue}', {
       method: 'GET',
       headers: {
@@ -24,24 +25,31 @@ async function getData(inputValue: number): Promise<Array<number>> {
     const result = (await response.json()) as ServerResponse;
 
     return result.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("error message: ", error.message)
+    }
+
+    return await generateData(inputValue);
+  }
 }
 
-// async function getData(inputValue: number): Promise<Array<number>> {
-//   let data: Array<number> = [inputValue];
+async function generateData(inputValue: number): Promise<Array<number>> {
+  let data: Array<number> = [inputValue];
 
-//   while (inputValue != 1) {
-//     if (inputValue % 2 == 0) {
-//       inputValue /= 2;
-//     } else {
-//       inputValue = (3 * inputValue) + 1;
-//     }
+  while (inputValue != 1) {
+    if (inputValue % 2 == 0) {
+      inputValue /= 2;
+    } else {
+      inputValue = (3 * inputValue) + 1;
+    }
 
-//     data.push(inputValue);
-//   }
+    data.push(inputValue);
+  }
 
-//   data.push(4, 2, 1, 4, 2, 1);
-//   return data;
-// }
+  data.push(4, 2, 1, 4, 2, 1);
+  return data;
+}
 
 export function Menu(props: MenuProps) {
   return (
