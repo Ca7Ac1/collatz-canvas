@@ -5,13 +5,43 @@ type MenuProps = {
   displayCallback: (inputValue: Array<number>) => void
 };
 
+type ServerResponse = {
+  data: Array<number>
+}
+
 const delay = (ms: number) => new Promise(
   resolve => setTimeout(resolve, ms)
 );
 
 async function getData(inputValue: number): Promise<Array<number>> {
-  return [inputValue];
+  const response = await fetch('http://CollatzCanvas/server/${inputValue}', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
+    const result = (await response.json()) as ServerResponse;
+
+    return result.data;
 }
+
+// async function getData(inputValue: number): Promise<Array<number>> {
+//   let data: Array<number> = [inputValue];
+
+//   while (inputValue != 1) {
+//     if (inputValue % 2 == 0) {
+//       inputValue /= 2;
+//     } else {
+//       inputValue = (3 * inputValue) + 1;
+//     }
+
+//     data.push(inputValue);
+//   }
+
+//   data.push(4, 2, 1, 4, 2, 1);
+//   return data;
+// }
 
 export function Menu(props: MenuProps) {
   return (
