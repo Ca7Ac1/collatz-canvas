@@ -1,23 +1,16 @@
-version: '1'
 services:
   client:
     tty: true
     build:
-      context: ./
-      dockerfile: ./client/Dockerfile
+      context: ./client
     environment:
       PORT: 3000
       PROXY_API: http://server:8080/
     ports:
       - 3000:3000
-    volumes:
-      - ./client/src:/collatz/client/src:rw
   server:
     tty: true
     build:
-      context: ./
-      dockerfile: ./server/Dockerfile
+      context: ./server
     ports:
       - 8080:8080
-    volumes:
-      - ./server/src:/collatz/server/src:rw

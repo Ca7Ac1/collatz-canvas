@@ -1,6 +1,8 @@
 FROM ubuntu:22.04
 
-WORKDIR /collatz
+WORKDIR /collatz-server
+
+COPY . .
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -10,8 +12,3 @@ RUN apt-get update && \
         libssl-dev  \
     && \
     apt-get clean
-
-RUN mkdir -p ./server/src
-
-COPY ./CMakeLists.txt ./
-COPY ./server/src ./server/src
